@@ -1,0 +1,25 @@
+html, body {
+    width: 300px;
+  }
+  
+  .yazi {
+    width: 100%;
+    padding: 4px;
+    font-size: 1.5em;
+    text-align: center;
+    color:red;
+  }
+  .clickme {
+      width:95%;
+      padding: 4px;
+      align-content: center;
+      font-size:large;
+      text-align: center;
+      cursor:pointer;
+      background-color:yellowgreen;
+      color:tomato;
+  }
+  .clickme:hover{
+      background-color: yellow;
+  }
+  
