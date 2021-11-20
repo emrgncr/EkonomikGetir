@@ -3,6 +3,13 @@ var ycomponent = document.getElementById("otzbir");
 var htm = null
 var url = "";
 var ar = [];
+
+function pairtoString(par){
+  let a = par[0];
+  let b = par[1];
+  return `${a} - ${b}₺`
+}
+
 document.addEventListener("click", function(e) {
     if (e.target.id != "message") {
       return;
@@ -16,20 +23,28 @@ document.addEventListener("click", function(e) {
         ycomponent.innerText = "Lütfen geçerli bir fiyat aralığı seçin." + (min > max).toString() + " " + (min).toString() + " " + (max).toString()
         return;
     }
-    let itls = get_results(min,max,ar,3);
+    let itls = [];
+    for (let index = 1; index < 7; index++) {
+      console.log(index);
+      itls= itls.concat(get_results(min,max,ar,index));
+      if (itls.length > 20) break;
+      
+    }
+    //itls.reverse()
+    itls.sort((a,b) => a[0] - b[0]/*- ((a.length - b.length)*(1-Math.abs(Math.sign(b[0] - a[0]))))*/)
     //ycomponent.innerText = itls[0] ;
-    for(let i = 0;i<Math.min(20,itls.length);i++){
+    for(let i = 0;i<Math.min(30,itls.length);i++){
       let a = document.createElement('hr');
       document.body.appendChild(a);
       let b = document.createElement('div');
       b.className = "clickme"
-      b.innerText = itls[i][0].toString() + " ₺";
+      b.innerText = "Toplam: " + itls[i][0].toString() + "₺";
       document.body.appendChild(b);
-      for(let j = 1;j<itls[i].length;j++){
+      for(let j = itls[i].length -1;j>0;j--){
         let p = document.createElement('div');
         p.className = "clickme"
         // console.log(ar[itls[i][p]])
-        p.innerText = ar[itls[i][j]];
+        p.innerText = pairtoString(ar[itls[i][j]]);
         document.body.appendChild(p);
       }
     }
@@ -84,7 +99,6 @@ function get_results(min,max,ar,maxrs){
       }
     }
     get_do(min,max,ar,maxrs,0,0,[])
-    gl.sort((a,b) => a[0] - b[0]/*- ((a.length - b.length)*(1-Math.abs(Math.sign(b[0] - a[0]))))*/)
     return gl;
 }
 
@@ -94,7 +108,11 @@ function get_results(min,max,ar,maxrs){
 chrome.runtime.onMessage.addListener(function(request, sender) {
     if (request.action == "getSource") {
       htm = request.source;
-      ar = parseGetirList(htm)
+      ar = parseGetirList(htm);
+      let mp = getMinPrice(htm);
+      // console.log(mp);
+      document.querySelector("#minput").value = mp;
+      document.querySelector("#maxput").value = mp + 5;
     //   message.innerText = ar[0]
     //   for(i in ar){
     //       const e = document.createElement('div');
@@ -112,7 +130,7 @@ chrome.runtime.onMessage.addListener(function(request, sender) {
         if (url.slice(0,urlstart.length) != urlstart){
             ycomponent.innerHTML = "Bir getir yemek restoran sayfasında değilsin!";
             var children = Array.prototype.slice.call(document.body.children);
-            console.log(children)
+            // console.log(children)
             children.forEach(element => {
                 if(element.id != "otzbir") element.remove();
             });
@@ -143,7 +161,25 @@ chrome.runtime.onMessage.addListener(function(request, sender) {
   window.onload = onWindowLoad;
   
 
-
+function getMinPrice(text){
+  let a1 = text.indexOf("</style>");
+    if(a1 == -1) return ar;
+    a1 += 2;
+    a1 = text.indexOf("Min",a1);
+    a1 += 1;
+    a1 = text.indexOf("₺",a1)+1;
+    let a2 = text.indexOf("<",a1);
+    // console.log(text.slice(a1,a2));
+    let t1 = parseFloat(text.slice(a1,a2).replace(",","."));
+    a1 = text.indexOf("Müdavim +") + 1;
+    if(a1 == -1) return t1;
+    a2 = text.indexOf("TL", a1);
+    if(a2 == -1) return t1;
+    let t2 = parseFloat(text.slice(a1 + "Müdavim +".length,a2).replace(",","."))
+    // console.log(t1);
+    // console.log(t2);
+    return t1 + t2;
+}
 
 
 /**
