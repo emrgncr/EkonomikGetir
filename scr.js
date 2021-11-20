@@ -38,13 +38,13 @@ document.addEventListener("click", function(e) {
     for (let index = 1; index < 7; index++) {
       console.log(index);
       itls= itls.concat(get_results(min,max,ar,index));
-      if (itls.length > 20) break;
+      if (itls.length > 25) break;
       
     }
     //itls.reverse()
     itls.sort((a,b) => a[0] - b[0]/*- ((a.length - b.length)*(1-Math.abs(Math.sign(b[0] - a[0]))))*/)
     //ycomponent.innerText = itls[0] ;
-    for(let i = 0;i<Math.min(30,itls.length);i++){
+    for(let i = 0;i<Math.min(40,itls.length);i++){
       let a = document.createElement('hr');
       document.body.appendChild(a);
       let b = document.createElement('div');
