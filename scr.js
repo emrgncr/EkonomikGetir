@@ -19,8 +19,19 @@ document.addEventListener("click", function(e) {
     let min = Number(document.querySelector("#minput").value);
     let max = Number(document.querySelector("#maxput").value);
     if(min == NaN || max == NaN) return;
+    var children = Array.prototype.slice.call(document.body.children);
+    // console.log(children)
+    let flag = false;
+    for(i in children){
+      console.log(children[i].id)
+      // console.log(flag)
+      if(flag){
+        children[i].remove();
+      }
+      if(children[i].id == "message") flag = true;
+    }
     if(min > max || min < 0 || max <= 0){
-        ycomponent.innerText = "Lütfen geçerli bir fiyat aralığı seçin." + (min > max).toString() + " " + (min).toString() + " " + (max).toString()
+        ycomponent.innerText = "Lütfen geçerli bir fiyat aralığı seçin."
         return;
     }
     let itls = [];
