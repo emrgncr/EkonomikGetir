@@ -17,6 +17,7 @@ document.addEventListener("click", function(e) {
     }
     if(ar.length == 0) return;
     if(url == "") return;
+    ycomponent.innerHTML = "Lütfen bekleyin"
     let min = Number(document.querySelector("#minput").value);
     let max = Number(document.querySelector("#maxput").value);
     if(min == NaN || max == NaN) return;
@@ -45,6 +46,7 @@ document.addEventListener("click", function(e) {
     //itls.reverse()
     itls.sort((a,b) => a[0] - b[0]/*- ((a.length - b.length)*(1-Math.abs(Math.sign(b[0] - a[0]))))*/)
     //ycomponent.innerText = itls[0] ;
+    ycomponent.innerHTML="";
     for(let i = 0;i<Math.min(100,itls.length);i++){
       let a = document.createElement('div');
       a.className = "bigbox";
@@ -135,6 +137,7 @@ chrome.runtime.onMessage.addListener(function(request, sender) {
       // console.log(mp);
       document.querySelector("#minput").value = mp;
       document.querySelector("#maxput").value = mp + 5;
+      ycomponent.innerHTML= "Butona basarak minimum fiyata en yakın kombinasyonları görebilirsiniz."
     //   message.innerText = ar[0]
     //   for(i in ar){
     //       const e = document.createElement('div');
@@ -158,7 +161,7 @@ chrome.runtime.onMessage.addListener(function(request, sender) {
             });
             return;
         }
-        ycomponent.innerHTML = "Bir getir yemek restoran sayfasındasın";
+        // ycomponent.innerHTML = "Bir getir yemek restoran sayfasındasın";
         
         // use `url` here inside the callback because it's asynchronous!
 
@@ -230,7 +233,7 @@ function parseGetirList(text){
         let flag = true;
         a1 = trimmed.indexOf("<",a2);
         if(a1 == -1) break;
-        let q1 = trimmed.slice(a2+1,a1)
+        let q1 = trimmed.slice(a2+1,a1).replace('&amp;','&');
         if(q1 == "Poşet"){
             flag = false;
         }
