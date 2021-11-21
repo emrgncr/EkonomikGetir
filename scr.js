@@ -46,7 +46,7 @@ document.addEventListener("click", function(e) {
     //itls.reverse()
     itls.sort((a,b) => a[0] - b[0]/*- ((a.length - b.length)*(1-Math.abs(Math.sign(b[0] - a[0]))))*/)
     //ycomponent.innerText = itls[0] ;
-    ycomponent.innerHTML="";
+    ycomponent.innerHTML="Ekonomik Getir";
     for(let i = 0;i<Math.min(100,itls.length);i++){
       let a = document.createElement('div');
       a.className = "bigbox";
@@ -137,7 +137,7 @@ chrome.runtime.onMessage.addListener(function(request, sender) {
       // console.log(mp);
       document.querySelector("#minput").value = mp;
       document.querySelector("#maxput").value = mp + 5;
-      ycomponent.innerHTML= "Butona basarak minimum fiyata en yakın kombinasyonları görebilirsiniz."
+      ycomponent.innerHTML= "Ekonomik Getir"
     //   message.innerText = ar[0]
     //   for(i in ar){
     //       const e = document.createElement('div');
