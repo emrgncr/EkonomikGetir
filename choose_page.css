@@ -1,5 +1,9 @@
 html, body {
     width: 300px;
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    background-color: snow;
   }
   
   .yazi {
@@ -10,16 +14,58 @@ html, body {
     color:red;
   }
   .clickme {
-      width:95%;
+      min-width: fit-content;
+      max-width: 65%;
       padding: 4px;
+      min-height: 30px;
+      max-height:max-content;
       align-content: center;
+      justify-content: center;
+      display: flex;
       font-size:large;
       text-align: center;
       cursor:pointer;
-      background-color:yellowgreen;
-      color:tomato;
+      background-color:mediumslateblue;
+      color:snow;
+      border-radius: 8px;
+      flex-direction: column;
+      margin-right: auto;
+      margin-left: auto;
   }
   .clickme:hover{
-      background-color: yellow;
+      background-color: slateblue;
   }
-  
+  .sec{
+    background-color:mediumslateblue;
+    text-align: center;
+    color: snow;
+    font-size: large;
+    align-content:center;
+    justify-content:center;
+    flex-direction: column;
+    width: 90%;
+    min-height: 50px;
+    max-height:max-content;
+    padding: 4px;
+    border-radius: 6px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .bigbox{
+    background-color: slateblue;
+    width: 97%;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+    display: flex;
+    padding: 4px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-radius: 12px;
+    margin-top: 8px;
+    margin-left: auto;
+    margin-right: auto;
+  }

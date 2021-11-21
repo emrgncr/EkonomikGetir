@@ -7,7 +7,7 @@ var ar = [];
 function pairtoString(par){
   let a = par[0];
   let b = par[1];
-  return `${a} - ${b}₺`
+  return `${a} - ${b.toFixed(2)}₺`
 }
 
 document.addEventListener("click", function(e) {
@@ -45,18 +45,19 @@ document.addEventListener("click", function(e) {
     itls.sort((a,b) => a[0] - b[0]/*- ((a.length - b.length)*(1-Math.abs(Math.sign(b[0] - a[0]))))*/)
     //ycomponent.innerText = itls[0] ;
     for(let i = 0;i<Math.min(40,itls.length);i++){
-      let a = document.createElement('hr');
+      let a = document.createElement('div');
+      a.className = "bigbox";
       document.body.appendChild(a);
       let b = document.createElement('div');
-      b.className = "clickme"
-      b.innerText = "Toplam: " + itls[i][0].toString() + "₺";
-      document.body.appendChild(b);
+      b.className = "sec"
+      b.innerText = "Toplam: " + itls[i][0].toFixed(2) + "₺";
+      a.appendChild(b);
       for(let j = itls[i].length -1;j>0;j--){
         let p = document.createElement('div');
-        p.className = "clickme"
+        p.className = "sec"
         // console.log(ar[itls[i][p]])
         p.innerText = pairtoString(ar[itls[i][j]]);
-        document.body.appendChild(p);
+        a.appendChild(p);
       }
     }
     // ycomponent.innerText = ar[0];
@@ -174,19 +175,24 @@ chrome.runtime.onMessage.addListener(function(request, sender) {
 
 function getMinPrice(text){
   let a1 = text.indexOf("</style>");
-    if(a1 == -1) return ar;
+    if(a1 == -1) return 0;
     a1 += 2;
-    a1 = text.indexOf("Min",a1);
+    a1 = text.indexOf("Min.",a1);
+    if(a1 == -1) return 0;
+    console.log(a1);
     a1 += 1;
     a1 = text.indexOf("₺",a1)+1;
     let a2 = text.indexOf("<",a1);
-    // console.log(text.slice(a1,a2));
+    console.log(text.slice(a1,a2));
     let t1 = parseFloat(text.slice(a1,a2).replace(",","."));
     a1 = text.indexOf("Müdavim +") + 1;
     if(a1 == -1) return t1;
     a2 = text.indexOf("TL", a1);
     if(a2 == -1) return t1;
+    console.log(text.slice(a1 + "Müdavim +".length,a2))
     let t2 = parseFloat(text.slice(a1 + "Müdavim +".length,a2).replace(",","."))
+    console.log(t2);
+    if(!t2) return t1;
     // console.log(t1);
     // console.log(t2);
     return t1 + t2;
