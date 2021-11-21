@@ -1,6 +1,15 @@
 html, body {
-    width: 270px;
+    width: 280px;
     min-height: 400px;
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    background-color:rgb(59, 50, 116);
+  }
+  .genel{
+    width: 94%;
+    margin-left: auto;
+    margin-right: auto;
     justify-content: center;
     align-content: center;
     justify-items: center;

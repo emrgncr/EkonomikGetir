@@ -3,6 +3,7 @@ var ycomponent = document.getElementById("topyazi");
 var htm = null
 var url = "";
 var ar = [];
+const genel = document.querySelector("#genel");
 
 function pairtoString(par){
   let a = par[0];
@@ -19,7 +20,7 @@ document.addEventListener("click", function(e) {
     let min = Number(document.querySelector("#minput").value);
     let max = Number(document.querySelector("#maxput").value);
     if(min == NaN || max == NaN) return;
-    var children = Array.prototype.slice.call(document.body.children);
+    var children = Array.prototype.slice.call(genel.children);
     // console.log(children)
     let flag = false;
     for(i in children){
@@ -47,7 +48,7 @@ document.addEventListener("click", function(e) {
     for(let i = 0;i<Math.min(100,itls.length);i++){
       let a = document.createElement('div');
       a.className = "bigbox";
-      document.body.appendChild(a);
+      genel.appendChild(a);
       let b = document.createElement('div');
       b.className = "sec"
       b.innerText = "Toplam: " + itls[i][0].toFixed(2) + "₺";
@@ -139,7 +140,7 @@ chrome.runtime.onMessage.addListener(function(request, sender) {
     //       const e = document.createElement('div');
     //       e.classList.add("clickme");
     //       e.innerText = ar[i][0] + "\t" + ar[i][1];
-    //       document.body.append(e);
+    //       genel.append(e);
     //   }
     }
   });
@@ -150,7 +151,7 @@ chrome.runtime.onMessage.addListener(function(request, sender) {
     
         if (url.slice(0,urlstart.length) != urlstart){
             ycomponent.innerHTML = "Bir getir yemek restoran sayfasında değilsin!";
-            var children = Array.prototype.slice.call(document.body.children);
+            var children = Array.prototype.slice.call(genel.children);
             // console.log(children)
             children.forEach(element => {
                 if(element.id != "topyazi") element.remove();
