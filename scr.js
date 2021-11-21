@@ -1,5 +1,5 @@
 const urlstart = "https://getir.com/yemek/restoran/";
-var ycomponent = document.getElementById("otzbir");
+var ycomponent = document.getElementById("topyazi");
 var htm = null
 var url = "";
 var ar = [];
@@ -44,7 +44,7 @@ document.addEventListener("click", function(e) {
     //itls.reverse()
     itls.sort((a,b) => a[0] - b[0]/*- ((a.length - b.length)*(1-Math.abs(Math.sign(b[0] - a[0]))))*/)
     //ycomponent.innerText = itls[0] ;
-    for(let i = 0;i<Math.min(40,itls.length);i++){
+    for(let i = 0;i<Math.min(100,itls.length);i++){
       let a = document.createElement('div');
       a.className = "bigbox";
       document.body.appendChild(a);
@@ -59,6 +59,15 @@ document.addEventListener("click", function(e) {
         p.innerText = pairtoString(ar[itls[i][j]]);
         a.appendChild(p);
       }
+      a.animate([
+        // keyframes
+        { transform: 'translateY(300px)' },
+        { transform: 'translateY(0px)' }
+      ], {
+        // timing options
+        duration: 130 + (i*45),
+        iterations: 1
+      });
     }
     // ycomponent.innerText = ar[0];
   });
@@ -144,7 +153,7 @@ chrome.runtime.onMessage.addListener(function(request, sender) {
             var children = Array.prototype.slice.call(document.body.children);
             // console.log(children)
             children.forEach(element => {
-                if(element.id != "otzbir") element.remove();
+                if(element.id != "topyazi") element.remove();
             });
             return;
         }

@@ -1,17 +1,34 @@
 html, body {
-    width: 300px;
+    width: 270px;
+    min-height: 400px;
     justify-content: center;
     align-content: center;
     justify-items: center;
-    background-color: snow;
+    background-color:rgb(59, 50, 116);
   }
-  
+  .inp{
+    border-radius: 4px;
+    padding-left: 8px;
+    font-size:medium;
+    width: 92%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+
   .yazi {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     width: 100%;
     padding: 4px;
-    font-size: 1.5em;
+    font-size: 1.2em;
     text-align: center;
-    color:red;
+    color:gold;
+    text-shadow: gainsboro;
+  }
+  .smaltext{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color:gold;
   }
   .clickme {
       min-width: fit-content;
@@ -31,11 +48,14 @@ html, body {
       flex-direction: column;
       margin-right: auto;
       margin-left: auto;
+      font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   }
   .clickme:hover{
       background-color: slateblue;
+      color:gold;
   }
   .sec{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     background-color:mediumslateblue;
     text-align: center;
     color: snow;
@@ -55,6 +75,7 @@ html, body {
     margin-right: auto;
   }
   .bigbox{
+    
     background-color: slateblue;
     width: 97%;
     align-content: center;
