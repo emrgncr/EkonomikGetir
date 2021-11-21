@@ -61,11 +61,11 @@ document.addEventListener("click", function(e) {
       }
       a.animate([
         // keyframes
-        { transform: 'translateY(300px)' },
+        { transform: `translateY(${300 + (i*20)}px)` },
         { transform: 'translateY(0px)' }
       ], {
         // timing options
-        duration: 130 + (i*45),
+        duration: 130 + (i*40),
         iterations: 1
       });
     }
