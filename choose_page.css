@@ -1,6 +1,7 @@
 html, body {
     width:300px;
     min-height: 400px;
+    margin-left: 3.5px;
     justify-content: center;
     align-content: center;
     justify-items: center;
@@ -9,12 +10,12 @@ html, body {
   .genel{
     width:-webkit-calc(100% - 10px);
     width:calc(100% - 10px);
-    padding-right: 5px;
-    margin-left: auto;
+    margin-left: 0px;
     margin-right: auto;
     justify-content: center;
     align-content: center;
     justify-items: center;
+    flex-direction: column;
     background-color:rgb(59, 50, 116);
   }
   .inp{
