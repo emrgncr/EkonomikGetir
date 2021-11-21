@@ -46,7 +46,7 @@ html, body {
   }
   .clickme {
       min-width: fit-content;
-      max-width: 65%;
+      max-width: 55%;
       padding: 4px;
       min-height: 30px;
       max-height:max-content;
