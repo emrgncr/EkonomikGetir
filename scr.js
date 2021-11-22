@@ -4,13 +4,24 @@ var htm = null
 var url = "";
 var ar = [];
 const genel = document.querySelector("#genel");
-
+/**
+ * display a product parsed with parseGetirList()
+ * @param {[String,Number]} par 
+ * @returns 
+ */
 function pairtoString(par){
   let a = par[0];
   let b = par[1];
   return `${a} - ${b.toFixed(2)}₺`
 }
-
+/**
+ * Removes duplicates in an array
+ * BAD IMPLEMENTATION BUT WHATEVER
+ * @param {Array} ar array to remove duplicates from
+ * @param {Array} gar array of products parsed with parseGetirList()
+ * @param {Number} max just leave empty
+ * @returns {Array} edited ar
+ */
 function remdouble(ar,gar,max){
   if(!max) max = ar.length;
     let rt = ar.slice(0,Math.min(ar.length,max));
@@ -35,20 +46,27 @@ function remdouble(ar,gar,max){
   }
     return rt;
 }
-
+//Upon click
 document.addEventListener("click", function(e) {
     if (e.target.id != "message") {
       return;
     }
     if(ar.length == 0) return;
     if(url == "") return;
+    //If user clicked to the button and user is in the right page
     ycomponent.innerHTML = "Lütfen bekleyin"
     let min = Number(document.querySelector("#minput").value);
     let max = Number(document.querySelector("#maxput").value);
     if(min == NaN || max == NaN) return;
+    //0<min <= max
+    if(min > max || min < 0 || max <= 0){
+      ycomponent.innerText = "Lütfen geçerli bir fiyat aralığı seçin."
+      return;
+    }
     var children = Array.prototype.slice.call(genel.children);
     // console.log(children)
     let flag = false;
+    //clear previous search results (if any) first
     for(i in children){
       console.log(children[i].id)
       // console.log(flag)
@@ -57,21 +75,19 @@ document.addEventListener("click", function(e) {
       }
       if(children[i].id == "message") flag = true;
     }
-    if(min > max || min < 0 || max <= 0){
-        ycomponent.innerText = "Lütfen geçerli bir fiyat aralığı seçin."
-        return;
-    }
+
     let itls = [];
+    //get combinations
     for (let index = 1; index < 7; index++) {
       console.log(index);
       itls= itls.concat(remdouble(get_results(min,max,ar,index),ar));
       if (itls.length > 25) break;
       
     }
-    //itls.reverse()
-    itls.sort((a,b) => a[0] - b[0]/*- ((a.length - b.length)*(1-Math.abs(Math.sign(b[0] - a[0]))))*/)
-    //ycomponent.innerText = itls[0] ;
+    
+    itls.sort((a,b) => a[0] - b[0]) //sort
     ycomponent.innerHTML="Ekonomik Getir";
+    //create DOM elements and append to general body
     for(let i = 0;i<Math.min(100,itls.length);i++){
       let a = document.createElement('div');
       a.className = "bigbox";
@@ -87,6 +103,7 @@ document.addEventListener("click", function(e) {
         p.innerText = pairtoString(ar[itls[i][j]]);
         a.appendChild(p);
       }
+      //ANIMATE
       a.animate([
         // keyframes
         { transform: `translateY(${300 + (i*20)}px)` },
@@ -103,13 +120,13 @@ document.addEventListener("click", function(e) {
 
 
 /**
+ * gets combinations
+ * @param {Number} min min price 
+ * @param {Number} max max price
+ * @param {Array} ar array of products each element ["product-name",price]
+ * @param {Number} maxrs number of products in one combination
  * 
- * @param {Number} min 
- * @param {Number} max 
- * @param {Array} ar 
- * @param {Number} maxrs 
- * 
- * @returns {Array}
+ * @returns {Array} array, each elements is in [total_price,product1_index,product2_index...]
  */
 function get_results(min,max,ar,maxrs){
     let gl = [];
@@ -118,14 +135,14 @@ function get_results(min,max,ar,maxrs){
       st += 1;
     }
     /**
-     * 
-     * @param {*} min 
-     * @param {*} max 
-     * @param {*} ar 
-     * @param {*} rs 
-     * @param {*} st 
-     * @param {*} add 
-     * @param {Array} prev 
+     * Recursively makes combinations and appends to gl
+     * @param {Number} min 
+     * @param {Number} max 
+     * @param {Array} ar 
+     * @param {Number} rs step number
+     * @param {Number} st starting index of array
+     * @param {Number} add total price so far
+     * @param {Array} prev array of previous step
      */
     function get_do(min,max,ar,rs,st,add,prev){
       while(st < ar.length && add + ar[st][1] > max){
@@ -154,7 +171,9 @@ function get_results(min,max,ar,maxrs){
 
 
 
-
+/**
+ * once the source returned, parses the html
+ */
 chrome.runtime.onMessage.addListener(function(request, sender) {
     if (request.action == "getSource") {
       htm = request.source;
@@ -173,7 +192,12 @@ chrome.runtime.onMessage.addListener(function(request, sender) {
     //   }
     }
   });
-  
+  /**
+   * runs when popup is open,
+   * checks if the user is in restaurant page,
+   * if so injects a js to get the page source html
+   * 
+   */
   async function onWindowLoad() {
     await chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
         url = tabs[0].url;
@@ -209,9 +233,14 @@ chrome.runtime.onMessage.addListener(function(request, sender) {
   
   }
   
-  window.onload = onWindowLoad;
+window.onload = onWindowLoad;
   
-
+/**
+ * parses the page html and returns the minimum shipping price, 
+ * Müdavim indirimi varsa dahil eder
+ * @param {String} text html of the page 
+ * @returns 
+ */
 function getMinPrice(text){
   let a1 = text.indexOf("</style>");
     if(a1 == -1) return 0;
@@ -239,9 +268,9 @@ function getMinPrice(text){
 
 
 /**
- * 
- * @param {string} text
- * @returns {Array} 
+ * Parse HTML to get product list
+ * @param {string} text page source html as string
+ * @returns {Array} array each element as ["product name":str,price:number]
  */
 function parseGetirList(text){
     let ar = [];
