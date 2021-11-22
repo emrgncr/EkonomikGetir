@@ -11,6 +11,31 @@ function pairtoString(par){
   return `${a} - ${b.toFixed(2)}₺`
 }
 
+function remdouble(ar,gar,max){
+  if(!max) max = ar.length;
+    let rt = ar.slice(0,Math.min(ar.length,max));
+    let a = 0;
+    for(let i = 0;i<Math.min(max,ar.length) - 1;i++){
+      for(let  j= i+1;j<Math.min(max,ar.length);j++){
+      let f = true;
+      for(let k = 1; k <  ar[i].length; k++){
+        if(gar[ar[i][k]][0] != gar[ar[j][k]][0]){
+          f = false;
+          break;
+        }
+      }
+      if(f){
+        // console.log(ar[i],ar[j]);
+        // console.log(rt.length);
+        rt.splice(i + a,1);
+        a --;
+        break;
+      }
+    }
+  }
+    return rt;
+}
+
 document.addEventListener("click", function(e) {
     if (e.target.id != "message") {
       return;
@@ -39,7 +64,7 @@ document.addEventListener("click", function(e) {
     let itls = [];
     for (let index = 1; index < 7; index++) {
       console.log(index);
-      itls= itls.concat(get_results(min,max,ar,index));
+      itls= itls.concat(remdouble(get_results(min,max,ar,index),ar));
       if (itls.length > 25) break;
       
     }
@@ -108,6 +133,7 @@ function get_results(min,max,ar,maxrs){
       }
       if(st > ar.length || rs == 0 || add == max){
         if (add < min) return;
+        if(prev.length != maxrs) return;
         prev.push(add)
         gl.push(prev.slice().reverse())
         prev.pop()
